@@ -31,24 +31,24 @@ mkdir -p "$RELEASES_DIR/$RELEASE"
 echo "📦 Creating release folder..."
 
 # 2. клонируем код в релиз
-# 💡 каждый релиз = полный снимок проектаsecre
+# 💡 каждый релиз = полный снимок проекта
 git clone "$REPO_URL" "$RELEASES_DIR/$RELEASE"
 
 echo "⬇️ Code cloned into release"
 
-# 3. атомарно переключаем current
-# 💡 ln -sfn = без промежуточного состояния
-ln -sfn "$RELEASES_DIR/$RELEASE" "$CURRENT_LINK"
-
-echo "🔗 Switched current -> $RELEASE"
-
-# 4. пересборка Docker контейнера
+# 3. пересборка Docker контейнера
 # 💡 Nuxt SSR теперь собирается из новой версии кода
-cd "$APP_DIR"
+cd "$RELEASES_DIR/$RELEASE"
 
 docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
 
 echo "🐳 Docker rebuilt and restarted"
+
+# 4. атомарно переключаем current
+# 💡 ln -sfn = без промежуточного состояния
+ln -sfn "$RELEASES_DIR/$RELEASE" "$CURRENT_LINK"
+
+echo "🔗 Switched current -> $RELEASE"
 
 # 5. очистка старых релизов (оставляем только 3)
 echo "🧹 Cleaning old releases..."
