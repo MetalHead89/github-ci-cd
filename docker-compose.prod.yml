@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  github-ci-cd-nuxt:
+    build:
+      # 💡 ВАЖНО:
+      # Nuxt SSR билд берётся из "current"
+      # current всегда указывает на один конкретный релиз
+      context: ./current
+      target: prod
+    container_name: github-ci-cd-nuxt-prod
+    restart: always
+    expose:
+      - "3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: production
+    env_file:
+      - ./shared/.env
+    healthcheck:
+      # 💡 проверяем что SSR сервер жив
+      # если упал — Docker может перезапустить контейнер
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shared_net
+
+networks:
+  shared_net:
+    external: true

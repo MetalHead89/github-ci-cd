@@ -1,0 +1,45 @@
+name: Deploy Nuxt SSR (Release-based)
+
+# 🚨 триггер: любой пуш в master = деплой
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # =========================================
+      # 🚀 ШАГ 1: подключаемся к серверу по SSH
+      # =========================================
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          # =========================================
+          # 💡 ВСЯ ЛОГИКА ДЕПЛОЯ ЖИВЁТ НА СЕРВЕРЕ
+          # GitHub Actions только триггерит процесс
+          # =========================================
+          script: |
+            set -e
+
+            echo "======================================"
+            echo "🚀 STARTING REMOTE DEPLOY"
+            echo "======================================"
+
+            # 📁 переходим в директорию приложения
+            cd /var/www/github-ci-cd
+
+            # 🔁 запускаем серверный deploy script
+            # 💡 передаём URL репозитория
+            ./deploy.sh ${{ secrets.REPO_URL }}
+
+            echo "======================================"
+            echo "✅ DEPLOY FINISHED FROM GITHUB ACTIONS"
+            echo "======================================"
