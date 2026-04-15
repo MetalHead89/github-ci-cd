@@ -18,7 +18,7 @@ services:
     environment:
       NODE_ENV: development
     env_file:
-      - ./shared/.env
+      - ./.env
     healthcheck:
       # 💡 проверяем что SSR сервер жив
       # если упал — Docker может перезапустить контейнер
