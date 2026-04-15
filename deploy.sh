@@ -46,8 +46,7 @@ echo "🔗 Switched current -> $RELEASE"
 # 💡 Nuxt SSR теперь собирается из новой версии кода
 cd "$APP_DIR"
 
-docker compose build
-docker compose up -d
+docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
 
 echo "🐳 Docker rebuilt and restarted"
 
