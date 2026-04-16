@@ -46,6 +46,13 @@ git clone "$REPO_URL" "$RELEASES_DIR/$RELEASE"
 
 echo "⬇️ Code cloned into release"
 
+# 2.1 копируем .env в релиз
+echo "📄 Copying .env to release..."
+
+cp "$SHARED_DIR/.env" "$RELEASES_DIR/$RELEASE/.env"
+
+echo "✅ .env copied"
+
 # =========================================
 # 🆕 3. ОБНОВЛЯЕМ deploy.sh
 # =========================================
