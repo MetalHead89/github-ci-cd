@@ -3,10 +3,7 @@ version: '3.8'
 services:
   github-ci-cd-nuxt:
     build:
-      # 💡 ВАЖНО:
-      # Nuxt SSR билд берётся из "current"
-      # current всегда указывает на один конкретный релиз
-      context: ./current
+      context: .
       target: prod
     container_name: github-ci-cd-nuxt-prod
     restart: always
