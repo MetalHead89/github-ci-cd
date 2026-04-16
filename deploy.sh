@@ -57,16 +57,12 @@ echo "✅ .env copied"
 # 🆕 3. ОБНОВЛЯЕМ deploy.sh
 # =========================================
 # 💡 берём свежую версию deploy.sh из репозитория
-# и кладём её в корень приложения
+# и кладём её в корень приложения. Даём права на выполнение
 
 if [ -f "$RELEASES_DIR/$RELEASE/deploy.sh" ]; then
     echo "🔄 Updating deploy.sh..."
-
     cp "$RELEASES_DIR/$RELEASE/deploy.sh" "$APP_DIR/deploy.sh"
-
-    # даём права на выполнение
     chmod +x "$APP_DIR/deploy.sh"
-
     echo "✅ deploy.sh updated"
 else
     echo "⚠️ deploy.sh not found in repo, skipping update"
